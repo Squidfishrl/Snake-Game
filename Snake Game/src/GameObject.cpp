@@ -4,17 +4,20 @@
 using namespace std;
 
 
-GameObject::GameObject(const char* texture, SDL_Renderer* rendrr, int startingX, int startingY){
+GameObject::GameObject(const char* texture, SDL_Renderer* rendrr, int startingX, int startingY, int spd){
 	renderer = rendrr;
 	objTexture = TextureManager::LoadTexture(texture, renderer);
 
 	angle=0;
-	direction = 'u';
+	direction = NULL;
 	xpos = startingX;
 	ypos = startingY;
 
-	srcRect.h=20;
-	srcRect.w=20;
+	width = 20;
+	height = 20;
+
+	srcRect.h=width;
+	srcRect.w=height;
 	srcRect.x=0;
 	srcRect.y=0;
 
@@ -22,9 +25,13 @@ GameObject::GameObject(const char* texture, SDL_Renderer* rendrr, int startingX,
 	destRect.y = ypos;
 	destRect.w = srcRect.w;
 	destRect.h = srcRect.h;
+
+	speed=spd;
+
 }
 
-void GameObject::UpdateSnake(int speed){
+void GameObject::UpdateSnake(){
+
 	switch (direction) {
 		case 'u':
 			destRect.y-=speed;
@@ -41,6 +48,9 @@ void GameObject::UpdateSnake(int speed){
 			break;
 	}
 
+	xpos=destRect.x;
+	ypos=destRect.y;
+
 }
 
 void GameObject::UpdateApple(){
@@ -53,6 +63,36 @@ void GameObject::UpdateApple(){
 	if(destRect.y>1000)destRect.y-=800;
 }
 
+void GameObject::UpdateBody(GameObject* obj){
+
+
+	xpos = obj->xpos;
+	ypos = obj->ypos;
+
+
+//	switch (obj->direction) {
+//		case 'd':
+//			ypos-=;
+//			break;
+//
+//		case 'u':
+//			ypos+=height;
+//			break;
+//
+//		case 'l':
+//			xpos+=width;
+//			break;
+//
+//		case 'r':
+//			xpos-=width;
+//			break;
+//
+//
+//	}
+
+	destRect.x = xpos;
+	destRect.y = ypos;
+}
 
 
 void GameObject::Render(){

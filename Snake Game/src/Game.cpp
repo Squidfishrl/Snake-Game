@@ -7,9 +7,14 @@ SDL_Rect srcRect, destRect;
 
 GameObject* snakeHead;
 GameObject* apple;
+GameObject* snakeBody[1000];
+
 
 
 Game::Game(){
+
+
+	applesEaten = 0;
 
 }
 
@@ -36,8 +41,12 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
 		}
 		isRunning = true;
 
-		apple = new GameObject("assets/apple.png", renderer, 60, 60);
-		snakeHead = new GameObject("assets/snake_head.png", renderer, 900, 1000);
+
+
+		apple = new GameObject("assets/apple.png", renderer, 60, 60, 0);
+		snakeHead = new GameObject("assets/snake_head.png", renderer, 900, 1000, 20);
+		snakeHead->direction='u';
+
 
 
 
@@ -79,10 +88,24 @@ void Game::handleEvents(){
 }
 
 void Game::update(){
-	snakeHead->UpdateSnake(5);
-	if(snakeHead->CollisionCheck(apple)){
-		apple->UpdateApple();
+
+
+	if(applesEaten>0){
+		for(int i = applesEaten; i>1; i--){
+			snakeBody[i-1]->UpdateBody(snakeBody[i-2]);
+		}
+		snakeBody[0]->UpdateBody(snakeHead);
 	}
+
+
+	snakeHead->UpdateSnake();
+	if(snakeHead->CollisionCheck(apple)){
+		applesEaten++;
+		apple->UpdateApple();
+
+		snakeBody[applesEaten-1] = new GameObject("assets/snake_body.png", renderer, snakeHead->xpos-snakeHead->width, snakeHead->ypos, snakeHead->speed);
+	}
+
 
 }
 
@@ -91,6 +114,11 @@ void Game::render(){
 
 	snakeHead->Render();
 	apple->Render();
+
+	for(int i=0; i<applesEaten; i++){
+		snakeBody[i]->Render();
+	}
+
 
 	SDL_RenderPresent(renderer);
 

@@ -20,6 +20,8 @@ class Game {
 
 		bool running(){return isRunning;}
 
+		int applesEaten;
+
 	private:
 		bool isRunning;
 		SDL_Window *window = NULL;

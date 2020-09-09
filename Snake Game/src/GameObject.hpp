@@ -3,22 +3,28 @@
 class GameObject{
 
 public:
-	GameObject(const char* texture, SDL_Renderer* renderer, int xpos, int ypos);
+	GameObject(const char* texture, SDL_Renderer* renderer, int xpos, int ypos, int spd);
 	~GameObject();
 
-	void UpdateSnake(int speed);
+	void UpdateSnake();
 	void UpdateApple();
+	void UpdateBody(GameObject* obj);
 	void Render();
 	bool CollisionCheck(GameObject* B);
 
 	char direction;
 	int angle;
 
-	SDL_Rect srcRect, destRect;
-protected:
-
 	int xpos;
 	int ypos;
+	int width;
+	int height;
+	int speed;
+
+private:
+
+
+	SDL_Rect srcRect, destRect;
 
 	SDL_Texture* objTexture;
 
