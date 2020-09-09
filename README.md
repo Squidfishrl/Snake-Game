@@ -2,7 +2,9 @@
 Snake game written in C++ using the SDL2 library 
 
 WIP - features to add:
- - collision detection
  - snake body extention
+ - snake body and wall collision detection
  - score system
- - more foods
+ - scaling difficulty
+ - better apple generation
+ - more foods(diffrent abbilities)
