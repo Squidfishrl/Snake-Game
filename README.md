@@ -7,4 +7,4 @@ WIP - features to add:
  - score system
  - scaling difficulty
  - better apple generation
- - more foods(diffrent abbilities)
+ - more foods(diffrent abilities)
