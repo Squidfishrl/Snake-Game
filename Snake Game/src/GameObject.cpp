@@ -53,6 +53,30 @@ void GameObject::UpdateApple(){
 	if(destRect.y>1000)destRect.y-=800;
 }
 
+
+
 void GameObject::Render(){
 	SDL_RenderCopyEx(renderer, objTexture, &srcRect, &destRect, angle, NULL, SDL_FLIP_NONE);
 }
+
+bool GameObject::CollisionCheck(GameObject* B){
+	int left1=destRect.x;
+	int right1=destRect.x + destRect.w;
+	int top1=destRect.y;
+	int bottom1=destRect.y + destRect.h;
+
+	int left2=B->destRect.x;
+	int right2=B->destRect.x + B->destRect.w;
+	int top2=B->destRect.y;
+	int bottom2=B->destRect.y + B->destRect.h;
+
+	if(left1 > right2 || left2 > right1 || top1>bottom2 || top2>bottom1){
+		return false;
+	}else{
+		return true;
+	}
+
+}
+
+
+

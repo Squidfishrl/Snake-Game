@@ -2,6 +2,7 @@
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
 
+
 SDL_Rect srcRect, destRect;
 
 GameObject* snakeHead;
@@ -78,8 +79,10 @@ void Game::handleEvents(){
 }
 
 void Game::update(){
-	snakeHead->UpdateSnake(1);
-	apple->UpdateApple();
+	snakeHead->UpdateSnake(5);
+	if(snakeHead->CollisionCheck(apple)){
+		apple->UpdateApple();
+	}
 
 }
 
@@ -100,3 +103,4 @@ void Game::close(){
 	printf("Game closed \n");
 
 }
+
