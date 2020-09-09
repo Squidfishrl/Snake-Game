@@ -36,7 +36,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
 		isRunning = true;
 
 		apple = new GameObject("assets/apple.png", renderer, 60, 60);
-		snakeHead = new GameObject("assets/snake_head.png", renderer, 0, 0);
+		snakeHead = new GameObject("assets/snake_head.png", renderer, 900, 1000);
 
 
 
@@ -65,11 +65,11 @@ void Game::handleEvents(){
 					snakeHead->direction = 'd';
 					snakeHead->angle = 180;
 					break;
-				case SDLK_LEFT: case SDLK_d:
+				case SDLK_LEFT: case SDLK_a:
 					snakeHead->direction = 'l';
 					snakeHead->angle = 270;
 					break;
-				case SDLK_RIGHT: case SDLK_r:
+				case SDLK_RIGHT: case SDLK_d:
 					snakeHead->direction = 'r';
 					snakeHead->angle = 90;
 					break;
@@ -78,7 +78,7 @@ void Game::handleEvents(){
 }
 
 void Game::update(){
-	snakeHead->UpdateSnake(5);
+	snakeHead->UpdateSnake(1);
 	apple->UpdateApple();
 
 }

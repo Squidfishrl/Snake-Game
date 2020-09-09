@@ -1,8 +1,6 @@
 #include "GameObject.hpp"
 #include "TextureManager.hpp"
-#include <cstdlib>
-#include <ctime>
-
+#include <random>
 using namespace std;
 
 
@@ -11,7 +9,7 @@ GameObject::GameObject(const char* texture, SDL_Renderer* rendrr, int startingX,
 	objTexture = TextureManager::LoadTexture(texture, renderer);
 
 	angle=0;
-	direction = 'r';
+	direction = 'u';
 	xpos = startingX;
 	ypos = startingY;
 
@@ -46,10 +44,13 @@ void GameObject::UpdateSnake(int speed){
 }
 
 void GameObject::UpdateApple(){
-	srand(time(0));
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<> distr(0, 1800);
+	destRect.x = distr(gen);
 
-	destRect.x = (rand() % 600);
-	destRect.y = (rand() % 800);
+	destRect.y = distr(gen);
+	if(destRect.y>1000)destRect.y-=800;
 }
 
 void GameObject::Render(){
