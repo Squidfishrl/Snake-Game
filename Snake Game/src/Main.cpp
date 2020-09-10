@@ -9,6 +9,7 @@ int main(int argc, char **argv) {
 	Uint32 frameStart;
 	int frameTime;
 
+	gameStartLabel:
 
 	game = new Game();
 
@@ -18,7 +19,13 @@ int main(int argc, char **argv) {
 		frameStart = SDL_GetTicks();
 
 		game->handleEvents();
-		game->update();
+		if(!game->update()){
+
+			game->score.points=1000*(game->score.snakeLength/(game->score.movesMade));
+			printf("score - %ld \n", game->score.points);
+			break;
+		}
+
 
 		game->render();
 
@@ -29,5 +36,9 @@ int main(int argc, char **argv) {
 		}
 	}
 	game->close();
+
+	// show score on screen
+	// try again option
+	goto gameStartLabel;
 	return 0;
 }

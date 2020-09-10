@@ -14,13 +14,22 @@ class Game {
 
 		void init(const char* title, int x, int y, int width, int height, bool fullscreen);
 		void handleEvents();
-		void update();
+		bool update(); // returns if the game can continue or not
 		void render();
 		void close();
 
 		bool running(){return isRunning;}
 
-		int snakeLength;
+
+		struct scoreBoard{
+			long int points;  // 100000*(snakeLength/(movesMade*secondsElapsed)
+			int applesEaten = 0;
+			int snakeLength = 0;
+			int secondsElapsed;
+			int movesMade = 0;
+		};
+
+		scoreBoard score;
 
 	private:
 		bool isRunning;
