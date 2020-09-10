@@ -3,8 +3,6 @@
 #include "GameObject.hpp"
 
 
-SDL_Rect srcRect, destRect;
-
 GameObject* snakeHead;
 GameObject* apple;
 GameObject* snakeBody[1000];
@@ -13,8 +11,8 @@ GameObject* snakeBody[1000];
 
 Game::Game(){
 
-
-	applesEaten = 0;
+	isRunning = NULL;
+	snakeLength = 0;
 
 }
 
@@ -43,7 +41,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
 
 
 
-		apple = new GameObject("assets/apple.png", renderer, 60, 60, 0);
+		apple = new GameObject("assets/apple.png", renderer, 900, 900, 0);
 		snakeHead = new GameObject("assets/snake_head.png", renderer, 900, 1000, 20);
 		snakeHead->direction='u';
 
@@ -89,22 +87,51 @@ void Game::handleEvents(){
 
 void Game::update(){
 
+	for (int i = 2; i < snakeLength; i++) {//end game if snake collides with itself. the first bodypart is always collided with the head and the 2nd one gets collided after a turn
+			if(snakeHead->CollisionCheck(snakeBody[i])){
+			printf("collision with %d \n", i);
 
-	if(applesEaten>0){
-		for(int i = applesEaten; i>1; i--){
+			}
+		}
+
+	if(snakeLength>0){ // ,snake body to follow head
+		for(int i = snakeLength; i>1; i--){
 			snakeBody[i-1]->UpdateBody(snakeBody[i-2]);
 		}
 		snakeBody[0]->UpdateBody(snakeHead);
 	}
 
 
-	snakeHead->UpdateSnake();
-	if(snakeHead->CollisionCheck(apple)){
-		applesEaten++;
-		apple->UpdateApple();
+	snakeHead->UpdateSnake(); //snake head movement
 
-		snakeBody[applesEaten-1] = new GameObject("assets/snake_body.png", renderer, snakeHead->xpos-snakeHead->width, snakeHead->ypos, snakeHead->speed);
+	// check if snake is going out of screen and tp it to other end of screen
+	if(snakeHead->xpos<0)snakeHead->xpos=1800;
+	else if(snakeHead->xpos>1800)snakeHead->xpos=0;
+	else if(snakeHead->ypos<0)snakeHead->ypos=1000;
+	else if(snakeHead->ypos>1000)snakeHead->ypos=0;
+	snakeHead->TeleportSnake();
+
+
+
+
+	if(snakeHead->CollisionCheck(apple)){
+		apple->UpdateApple(); // increase snake body and move apple
+
+		if(snakeLength == 0){
+			snakeBody[snakeLength] = new GameObject("assets/snake_body.png", renderer, snakeHead->xpos, snakeHead->ypos-10, snakeHead->speed);
+		}else{
+			snakeBody[snakeLength] = new GameObject("assets/snake_body.png", renderer, snakeBody[snakeLength-1]->xpos, snakeBody[snakeLength-1]->ypos, snakeHead->speed);
+		}
+
+		snakeLength++;
 	}
+
+
+
+
+
+
+
 
 
 }
@@ -115,7 +142,7 @@ void Game::render(){
 	snakeHead->Render();
 	apple->Render();
 
-	for(int i=0; i<applesEaten; i++){
+	for(int i=0; i<snakeLength; i++){
 		snakeBody[i]->Render();
 	}
 

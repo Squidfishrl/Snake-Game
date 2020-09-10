@@ -20,7 +20,7 @@ class Game {
 
 		bool running(){return isRunning;}
 
-		int applesEaten;
+		int snakeLength;
 
 	private:
 		bool isRunning;

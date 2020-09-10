@@ -53,6 +53,11 @@ void GameObject::UpdateSnake(){
 
 }
 
+void GameObject::TeleportSnake(){
+	destRect.x = xpos;
+	destRect.y = ypos;
+}
+
 void GameObject::UpdateApple(){
 	random_device rd;
 	mt19937 gen(rd());
@@ -100,6 +105,8 @@ void GameObject::Render(){
 }
 
 bool GameObject::CollisionCheck(GameObject* B){
+
+
 	int left1=destRect.x;
 	int right1=destRect.x + destRect.w;
 	int top1=destRect.y;

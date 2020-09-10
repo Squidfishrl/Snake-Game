@@ -7,6 +7,7 @@ public:
 	~GameObject();
 
 	void UpdateSnake();
+	void TeleportSnake();
 	void UpdateApple();
 	void UpdateBody(GameObject* obj);
 	void Render();
